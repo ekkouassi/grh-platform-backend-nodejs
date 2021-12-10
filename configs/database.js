@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const userModel = require('../models/user.model');
 mongoose
-    .connect(`mongodb://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@127.0.0.1:27017/${process.env.DB_NAME}?&authSource=admin`,
+    .connect(`mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@cluster0.cfv6t.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
