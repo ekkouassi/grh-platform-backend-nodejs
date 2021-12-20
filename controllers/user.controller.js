@@ -3,7 +3,7 @@ const {propertyValidator, validate} = require("../utils/validators");
 const objectID = require('mongoose').Types.ObjectId;
 const bcrypt = require('bcrypt');
 const {onUploadFile, deleteFileIfExistsBeforeUpload} = require("../utils/upload");
-const { JPEG, PNG, JPG } = require('../utils/constants');
+const { JPEG, PNG, JPG, ABSOLUTE_PATH } = require('../utils/constants');
 
 const cryptPasswod = async (password) => {
     const salt = await bcrypt.genSalt();
@@ -63,8 +63,10 @@ module.exports.updateProfile = async (req, res) => {
         return res.status(400).send("UNKNOWN ID : "+ req.params.id);
 
     const user = await userModel.findById({ _id: req.params.id }).exec();
-    if (!bcrypt.compareSync(req.body.password, user.password))
-        return res.status(400).send({ message: 'The given password to ver' });
+    
+    if(req.body.password || req.body.username || req.body.email)
+        if (!bcrypt.compareSync(req.body.password, user.password))
+            return res.status(400).send({ message: 'The given password to ver' });
 
     try {
         userModel.findByIdAndUpdate(
@@ -102,8 +104,10 @@ module.exports.updateAvatar = async (req, res) => {
     await userModel.findById(req.params.id, (error, docs) => {
         if (error) return console.log("AN ERROR : ", error)
         if(docs.avatar){
-            deleteFileIfExistsBeforeUpload('users/'+docs.avatar);
-            docs.avatar = result.uploadedFileName;
+            const file = docs.avatar.split('/')[docs.avatar.split('/').length -1];
+            console.log(file);
+            deleteFileIfExistsBeforeUpload('users/' + file);
+            docs.avatar = ABSOLUTE_PATH + 'users/' + result.uploadedFileName;
             docs.save((error, docs) => {
                 if(error)
                     console.log("SOME ERROR : ", error)
@@ -112,7 +116,7 @@ module.exports.updateAvatar = async (req, res) => {
         } else {
             userModel.findByIdAndUpdate(
                 { _id: req.params.id },
-                { $set: { avatar: result.uploadedFileName } },
+                { $set: { avatar: ABSOLUTE_PATH + 'users/' + result.uploadedFileName } },
                 { new: true, upsert: true, setDefaultsOnInsert: true },
                 (error, docs) => {
                     if(error)

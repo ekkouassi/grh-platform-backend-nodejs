@@ -6,7 +6,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "run": "node app.js"
   },
   "author": "Ernest KOUASSI",
   "license": "ISC",
