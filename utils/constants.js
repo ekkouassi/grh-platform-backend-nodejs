@@ -12,4 +12,4 @@ module.exports.HTTP_NOT_CONTENT = 204;
 module.exports.HTTP_BAD_REQUEST = 400;
 
 // ABSOLUTE PATH
-module.exports.ABSOLUTE_PATH = process.env.APP_URL + '/public/uploads/';
+module.exports.ABSOLUTE_PATH = process.env.APP_URL + '/uploads/';
