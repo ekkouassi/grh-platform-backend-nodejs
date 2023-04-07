@@ -38,8 +38,8 @@ async function authenticate({username, password, ipAddress}) {
 
     // save refresh token
     await refreshToken.save();
-    user.adminUrl = 'admin_' + crypto.randomBytes(10).toString('base64url');
-    await user.save();
+    // user.adminUrl = 'admin_' + crypto.randomBytes(10).toString('base64url');
+    // await user.save();
 
     // return basic details and tokens
     const refresh_token = refreshToken.token
