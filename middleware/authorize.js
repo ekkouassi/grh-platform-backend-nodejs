@@ -9,7 +9,7 @@ function authorize(){
         async (req, res, next) => {
             // get the token stored in the custom header called 'x-auth-token'
            //console.log(req)
-            const token = req.get('Authorization');
+            const token = req.get('Authorization').split(' ')[1];
             //send error message if no token is found
             if (!token)
                 return res.status(401).send({ message: "Access denied, token missing!" });
